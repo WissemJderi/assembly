@@ -12,7 +12,7 @@ function App() {
       return (
         <button className="alphabet-btn" key={alphabet}>
           {alphabet}
-        </button> 
+        </button>
       );
     });
 
@@ -50,6 +50,7 @@ function App() {
         <section className="language-container">{languageChips}</section>
         <section className="current-word">{currentWordArr}</section>
         <section className="keyboard">{keyboard}</section>
+        <button className="new-game">New Game</button>
       </main>
     </>
   );
