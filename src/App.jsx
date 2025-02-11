@@ -7,7 +7,12 @@ function App() {
   const [currentWord] = useState("react");
   // State to hold the user's guesses
   const [userGuess, setUserGuess] = useState([]);
-
+  console.log(userGuess);
+  function updateUserGuess(alphabet) {
+    setUserGuess((prevArr) =>
+      prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
+    );
+  }
   // Alphabet string
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -17,7 +22,13 @@ function App() {
     .split("")
     .map((alphabet) => {
       return (
-        <button className="alphabet-btn" key={alphabet}>
+        <button
+          className="alphabet-btn"
+          key={alphabet}
+          onClick={() => {
+            updateUserGuess(alphabet);
+          }}
+        >
           {alphabet}
         </button>
       );
