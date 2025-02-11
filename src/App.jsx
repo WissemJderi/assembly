@@ -1,10 +1,17 @@
 import "./App.css";
 import { languages } from "./languages";
 import { useState } from "react";
+
 function App() {
+  // State to hold the current word to guess
   const [currentWord] = useState("react");
+  // State to hold the user's guesses
+  const [userGuess, setUserGuess] = useState([]);
+
+  // Alphabet string
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
+  // Generate keyboard buttons from the alphabet
   const keyboard = alphabet
     .toUpperCase()
     .split("")
@@ -16,12 +23,15 @@ function App() {
       );
     });
 
+  // Generate the current word display
   const currentWordArr = currentWord
     .toUpperCase()
     .split("")
     .map((letter, index) => {
       return <span key={index}>{letter}</span>;
     });
+
+  // Generate language chips from the languages array
   const languageChips = languages.map((lang) => {
     return (
       <span
@@ -33,6 +43,7 @@ function App() {
       </span>
     );
   });
+
   return (
     <>
       <main>
