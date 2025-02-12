@@ -11,12 +11,17 @@ function App() {
   const wrongGuessCount = userGuess.filter(
     (letter) => !currentWord.includes(letter)
   ).length;
-  console.log(wrongGuessCount);
+  const isGameWon = currentWord
+    .split("")
+    .every((letter) => userGuess.includes(letter));
+  const isGameLost = wrongGuessCount >= languages.length - 1;
+  const isGameOver = isGameWon || isGameLost;
   function updateUserGuess(alphabet) {
     setUserGuess((prevArr) =>
       prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
     );
   }
+
   // Alphabet string
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -53,12 +58,15 @@ function App() {
   });
 
   // Generate language chips from the languages array
-  const languageChips = languages.map((lang) => {
+  const languageChips = languages.map((lang, i) => {
+    const langClass = clsx("language-btn", {
+      dead: i < wrongGuessCount,
+    });
     return (
       <span
         key={lang.name}
         style={{ backgroundColor: lang.backgroundColor, color: lang.color }}
-        className="language-btn"
+        className={langClass}
       >
         {lang.name}
       </span>
@@ -82,7 +90,7 @@ function App() {
         <section className="language-container">{languageChips}</section>
         <section className="current-word">{currentWordArr}</section>
         <section className="keyboard">{keyboard}</section>
-        <button className="new-game">New Game</button>
+        {isGameOver && <button className="new-game">New Game</button>}
       </main>
     </>
   );

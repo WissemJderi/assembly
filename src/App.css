@@ -52,6 +52,10 @@ header > h1 {
   cursor: pointer;
   padding: 5px;
 }
+.dead {
+  opacity: 0.2;
+  text-decoration: line-through;
+}
 .current-word {
   margin-top: 20px;
 }
