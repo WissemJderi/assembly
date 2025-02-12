@@ -73,6 +73,10 @@ function App() {
     );
   });
 
+  const statusClass = clsx("status playing", {
+    won: isGameWon,
+    lost: isGameLost,
+  });
   return (
     <>
       <main>
@@ -83,7 +87,7 @@ function App() {
             safe from Assembly!
           </p>
         </header>
-        <button className="status">
+        <button className={statusClass}>
           You win! <br />
           Well Done!
         </button>

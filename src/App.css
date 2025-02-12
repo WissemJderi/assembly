@@ -32,9 +32,20 @@ header > h1 {
   width: 100%;
   border: none;
   border-radius: 5px;
-  background-color: #2c8f52;
+
   color: white;
   cursor: pointer;
+}
+.playing {
+  visibility: hidden;
+}
+button.won {
+  background-color: #2c8f52;
+  visibility: visible;
+}
+button.playing.lost {
+  background-color: #ec5d49;
+  visibility: visible;
 }
 .language-container {
   display: flex;
