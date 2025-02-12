@@ -7,6 +7,11 @@ function App() {
   const [currentWord] = useState("react");
   // State to hold the user's guesses
   const [userGuess, setUserGuess] = useState([]);
+
+  const wrongGuessCount = userGuess.filter(
+    (letter) => !currentWord.includes(letter)
+  ).length;
+  console.log(wrongGuessCount);
   function updateUserGuess(alphabet) {
     setUserGuess((prevArr) =>
       prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
@@ -20,6 +25,7 @@ function App() {
     const isGuessed = userGuess.includes(alphabet);
     const isCorrect = isGuessed && currentWord.includes(alphabet);
     const isWrong = isGuessed && !currentWord.includes(alphabet);
+
     const btnClass = clsx({
       correct: isCorrect,
       wrong: isWrong,
@@ -38,12 +44,13 @@ function App() {
   });
 
   // Generate the current word display
-  const currentWordArr = currentWord
-    .toUpperCase()
-    .split("")
-    .map((letter, index) => {
-      return <span key={index}>{letter}</span>;
-    });
+  const currentWordArr = currentWord.split("").map((letter, index) => {
+    return (
+      <span key={index}>
+        {userGuess.includes(letter) ? letter.toUpperCase() : ""}
+      </span>
+    );
+  });
 
   // Generate language chips from the languages array
   const languageChips = languages.map((lang) => {
