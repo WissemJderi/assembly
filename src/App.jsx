@@ -88,13 +88,22 @@ function App() {
           </p>
         </header>
         <button className={statusClass}>
-          You win! <br />
-          Well Done!
+          {isGameWon ? (
+            <>
+              <h2>You win!</h2>
+              <p>Well Done</p>
+            </>
+          ) : (
+            <>
+              <h2>Game over!</h2>
+              <p>You lose! Better start learning Assembly : &#41;</p>
+            </>
+          )}
         </button>
         <section className="language-container">{languageChips}</section>
         <section className="current-word">{currentWordArr}</section>
         <section className="keyboard">{keyboard}</section>
-        {isGameOver && <button className="new-game">New Game</button>}
+        {isGameOver && <button className="new-game">New game</button>}
       </main>
     </>
   );
