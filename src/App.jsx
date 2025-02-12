@@ -1,13 +1,12 @@
 import "./App.css";
 import { languages } from "./languages";
 import { useState } from "react";
-
+import clsx from "clsx";
 function App() {
   // State to hold the current word to guess
   const [currentWord] = useState("react");
   // State to hold the user's guesses
   const [userGuess, setUserGuess] = useState([]);
-  console.log(userGuess);
   function updateUserGuess(alphabet) {
     setUserGuess((prevArr) =>
       prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
@@ -17,22 +16,26 @@ function App() {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
   // Generate keyboard buttons from the alphabet
-  const keyboard = alphabet
-    .toUpperCase()
-    .split("")
-    .map((alphabet) => {
-      return (
-        <button
-          className="alphabet-btn"
-          key={alphabet}
-          onClick={() => {
-            updateUserGuess(alphabet);
-          }}
-        >
-          {alphabet}
-        </button>
-      );
+  const keyboard = alphabet.split("").map((alphabet) => {
+    const isGuessed = userGuess.includes(alphabet);
+    const isCorrect = isGuessed && currentWord.includes(alphabet);
+    const isWrong = isGuessed && !currentWord.includes(alphabet);
+    const btnClass = clsx({
+      correct: isCorrect,
+      wrong: isWrong,
     });
+    return (
+      <button
+        className={btnClass}
+        key={alphabet}
+        onClick={() => {
+          updateUserGuess(alphabet);
+        }}
+      >
+        {alphabet.toUpperCase()}
+      </button>
+    );
+  });
 
   // Generate the current word display
   const currentWordArr = currentWord
