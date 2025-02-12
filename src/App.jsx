@@ -2,6 +2,7 @@ import "./App.css";
 import { languages } from "./languages";
 import { useState } from "react";
 import clsx from "clsx";
+import { getFarewellText } from "./utils";
 function App() {
   // State to hold the current word to guess
   const [currentWord] = useState("react");
@@ -16,6 +17,10 @@ function App() {
     .every((letter) => userGuess.includes(letter));
   const isGameLost = wrongGuessCount >= languages.length - 1;
   const isGameOver = isGameWon || isGameLost;
+  const lastGuessedLetter = userGuess[userGuess.length - 1];
+  const isLastGuessIncorrect =
+    lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
+  console.log(isLastGuessIncorrect);
   function updateUserGuess(alphabet) {
     setUserGuess((prevArr) =>
       prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
@@ -42,6 +47,7 @@ function App() {
         onClick={() => {
           updateUserGuess(alphabet);
         }}
+        disabled={isGameOver}
       >
         {alphabet.toUpperCase()}
       </button>
@@ -93,12 +99,18 @@ function App() {
               <h2>You win!</h2>
               <p>Well Done</p>
             </>
-          ) : (
+          ) : isGameOver ? (
             <>
               <h2>Game over!</h2>
               <p>You lose! Better start learning Assembly : &#41;</p>
             </>
-          )}
+          ) : !isGameOver && isLastGuessIncorrect ? (
+            <>
+              <p className="farewell-message">
+                {getFarewellText(languages[wrongGuessCount - 1].name)}
+              </p>
+            </>
+          ) : null}
         </button>
         <section className="language-container">{languageChips}</section>
         <section className="current-word">{currentWordArr}</section>
