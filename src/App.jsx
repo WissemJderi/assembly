@@ -3,10 +3,11 @@ import { languages } from "./languages";
 import { useState } from "react";
 import clsx from "clsx";
 import { getFarewellText, randomWordGenerator } from "./utils";
-
+import ReactConfetti from "react-confetti";
+import { useWindowSize } from "react-use";
 function App() {
   // State to hold the current word to guess
-  const [currentWord] = useState(randomWordGenerator());
+  const [currentWord, setCurrentWord] = useState(randomWordGenerator());
 
   // State to hold the user's guesses
   const [userGuess, setUserGuess] = useState([]);
@@ -22,6 +23,10 @@ function App() {
   const lastGuessedLetter = userGuess[userGuess.length - 1];
   const isLastGuessIncorrect =
     lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
+  function resetButton() {
+    setCurrentWord(randomWordGenerator());
+    setUserGuess([]);
+  }
   function updateUserGuess(alphabet) {
     setUserGuess((prevArr) =>
       prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
@@ -57,9 +62,13 @@ function App() {
 
   // Generate the current word display
   const currentWordArr = currentWord.split("").map((letter, index) => {
+    const shouldRevealLetter = isGameLost || userGuess.includes(letter);
+    const letterClassName = clsx(
+      isGameLost && !userGuess.includes(letter) && "missed-letter"
+    );
     return (
-      <span key={index}>
-        {userGuess.includes(letter) ? letter.toUpperCase() : ""}
+      <span key={index} className={letterClassName}>
+        {shouldRevealLetter ? letter.toUpperCase() : ""}
       </span>
     );
   });
@@ -84,6 +93,7 @@ function App() {
     won: isGameWon,
     lost: isGameLost,
   });
+  const { width, height } = useWindowSize();
   return (
     <>
       <main>
@@ -97,6 +107,12 @@ function App() {
         <button className={statusClass}>
           {isGameWon ? (
             <>
+              <ReactConfetti
+                width={width}
+                height={height}
+                numberOfPieces={1000}
+                recycle={false}
+              />
               <h2>You win!</h2>
               <p>Well Done</p>
             </>
@@ -116,7 +132,11 @@ function App() {
         <section className="language-container">{languageChips}</section>
         <section className="current-word">{currentWordArr}</section>
         <section className="keyboard">{keyboard}</section>
-        {isGameOver && <button className="new-game">New game</button>}
+        {isGameOver && (
+          <button className="new-game" onClick={resetButton}>
+            New game
+          </button>
+        )}
       </main>
     </>
   );

@@ -1,5 +1,8 @@
 import { words } from "./words";
 
+export function resetButton() {
+  console.log("reset button is working");
+}
 export function randomWordGenerator() {
   const randomNum = Math.floor(Math.random() * words.length);
   return words[randomNum];
