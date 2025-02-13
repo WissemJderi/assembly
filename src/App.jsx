@@ -2,10 +2,12 @@ import "./App.css";
 import { languages } from "./languages";
 import { useState } from "react";
 import clsx from "clsx";
-import { getFarewellText } from "./utils";
+import { getFarewellText, randomWordGenerator } from "./utils";
+
 function App() {
   // State to hold the current word to guess
-  const [currentWord] = useState("react");
+  const [currentWord] = useState(randomWordGenerator());
+
   // State to hold the user's guesses
   const [userGuess, setUserGuess] = useState([]);
 
@@ -20,7 +22,6 @@ function App() {
   const lastGuessedLetter = userGuess[userGuess.length - 1];
   const isLastGuessIncorrect =
     lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
-  console.log(isLastGuessIncorrect);
   function updateUserGuess(alphabet) {
     setUserGuess((prevArr) =>
       prevArr.includes(alphabet) ? prevArr : [...prevArr, alphabet]
